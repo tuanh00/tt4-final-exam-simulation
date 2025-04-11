@@ -2,21 +2,23 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5257:5257"  # your backend port
+    working_dir: /app
+    volumes:
+      - ./backend:/app
     environment:
-      - ASPNETCORE_URLS=http://+:5000
-    networks:
-      - app-network
+      - ASPNETCORE_ENVIRONMENT=Development
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
     ports:
-      - "3000:80"
-    networks:
-      - app-network
-
-networks:
-  app-network:
+      - "3000:3000"  # your React port
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
